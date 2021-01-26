@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Muzeum</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+  
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #222;
+  font-family: Georgia, serif;
+  color: #fff;
+  font-size: 14px;
+}
+
+a {
+  color: #ffffcc;
+  text-decoration: none;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  -ms-transition: 0.5s;
+  transition: 0.5s;
+}
+
+a:hover,
+a.selected {
+  color: #ffcc00;
+}
+
+h1,
+h2,
+h4,
+h5,
+h6 {
+  text-align: center;
+  color: #222;
+  text-shadow: #000 1px 1px 2px;
+  margin-bottom: 5px;
+}
+
+h1 {
+  font-size: 18px;
+}
+
+h2 {
+  font-size: 14px;
+}
+
+.sociales {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#timeline {
+  width: 800px;
+  height: 350px;
+  overflow: hidden;
+  margin: 100px auto;
+  position: relative;
+  background: url('../images/dot.gif') left 45px repeat-x;
+}
+
+#dates {
+  width: 800px;
+  height: 60px;
+  overflow: hidden;
+}
+
+#dates li {
+  list-style: none;
+  float: left;
+  width: 100px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  background: url('../images/biggerdot.png') center bottom no-repeat;
+}
+
+#dates a {
+  line-height: 38px;
+  padding-bottom: 10px;
+}
+
+#dates .selected {
+  font-size: 38px;
+}
+
+#issues {
+  width: 800px;
+  height: 350px;
+  overflow: hidden;
+}
+
+#issues li {
+  width: 800px;
+  height: 350px;
+  list-style: none;
+  float: left;
+}
+
+#issues li.selected img {
+  -webkit-transform: scale(1.1, 1.1);
+  -moz-transform: scale(1.1, 1.1);
+  -o-transform: scale(1.1, 1.1);
+  -ms-transform: scale(1.1, 1.1);
+  transform: scale(1.1, 1.1);
+}
+
+#issues li img {
+  float: left;
+  margin: 10px 30px 10px 50px;
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF)";
+  /* IE 8 */
+  
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF, endColorstr=#00FFFFFF);
+  /* IE 6 & 7 */
+  
+  zoom: 1;
+  -webkit-transition: all 2s ease-in-out;
+  -moz-transition: all 2s ease-in-out;
+  -o-transition: all 2s ease-in-out;
+  -ms-transition: all 2s ease-in-out;
+  transition: all 2s ease-in-out;
+  -webkit-transform: scale(0.7, 0.7);
+  -moz-transform: scale(0.7, 0.7);
+  -o-transform: scale(0.7, 0.7);
+  -ms-transform: scale(0.7, 0.7);
+  transform: scale(0.7, 0.7);
+}
+
+#issues li h1 {
+  color: #222;
+  font-size: 48px;
+  margin: 20px 0;
+  text-shadow: #000 1px 1px 2px;
+  text-align: left;
+  padding-left: 70px;
+}
+
+#issues li p {
+ color: #222;
+  font-size: 14px;
+  margin-right: 70px;
+  margin-left: 70px;
+  font-weight: normal;
+  line-height: 22px;
+  text-shadow: #000 1px 1px 2px;
+}
+
+#grad_left,
+#grad_right {
+  width: 100px;
+  height: 350px;
+  position: absolute;
+  top: 0;
+}
+
+#grad_left {
+  left: 0;
+  background: url('../images/grad_left.png') repeat-y;
+}
+
+#grad_right {
+  right: 0;
+  background: url('../images/grad_right.png') repeat-y;
+}
+
+#next,
+#prev {
+  position: absolute;
+  top: 0;
+  font-size: 70px;
+  top: 170px;
+  width: 22px;
+  height: 38px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+
+#next:hover,
+#prev:hover {
+  background-position: 0 -76px;
+}
+
+#next {
+  right: 0;
+  background: red;
+}
+
+#prev {
+  left: 0;
+  background: blue;
+}
+
+#next.disabled,
+#prev.disabled {
+  opacity: 0.2;
+}
+
+  .fakeimg {
+    height: 200px;
+    background: #aaa;
+  }
+  * {
+  box-sizing: border-box;
+}
+
+
+
+/* Center website */
+.main {
+  max-width: 1000px;
+  margin: auto;
+}
+
+
+
+p {
+	 color: #222;
+	font-size: 10px;
+}
+
+.p_small {
+	font-size: 6px;
+}
+.row {
+  margin: 8px -16px;
+}
+
+/* Add padding BETWEEN each column (if you want) */
+.row,
+.row > .column {
+  padding: 3px;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 25%;
+  display: none; /* Hide columns by default */
+}
+
+/* Clear floats after rows */ 
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Content */
+.content {
+  background-color: #fff;
+  padding: 10px;
+}
+
+/* The "show" class is added to the filtered elements */
+.show {
+  display: block;
+}
+
+/* Style the buttons */
+.btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Add a grey background color on mouse-over */
+.btn:hover {
+  background-color: #ddd;
+}
+
+/* Add a dark background color to the active button */
+.btn.active {
+  background-color: #666;
+   color: white;
+}
+  </style>
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<a class="nav-link" href="home.html">Home</a>
+ <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"> </button>
+<div id="collapsibleNavbar" class="collapse navbar-collapse">
+<ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="#">Wydarzenia</a>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="kalendarium.html">Kalendarium</a>
+      </li>
+      <li class="nav-item"><a class="navbar-brand" href="galeria.html">Galeria eksponatów</a>
+      </li>   
+	<li class="nav-item"> <a class="nav-link" href="#">Kontakt</a>
+      </li>   
+	<li class="nav-item"><a class="nav-link" href="#">Dziennik</a>
+      </li>   	  
+    </ul>
+  </div>  
+</nav>
+
+
+
+<div id="myBtnContainer">
+  <button class="btn active" onclick="filterSelection('all')"> Wszystkie</button>
+  <button class="btn" onclick="filterSelection('polska')"> Polska</button>
+  <button class="btn" onclick="filterSelection('zsrr')"> ZSRR</button>
+  <button class="btn" onclick="filterSelection('swiat')"> Świat</button>
+  <button class="btn" onclick="filterSelection('podzespoly')"> Podzespoły komputera</button>
+</div>
+
+<!-- Portfolio Gallery Grid -->
+<div class="row">
+  <div class="column polska">
+    <div class="content">
+      <img src="ss/800px-POL_ARR_Warsaw.jpg" alt="Mountains" style="width:100%">
+      <h4>ARR</h4>
+      <p>Pierwszym osiągnięciem GAM było zbudowanie w roku 1954 analogowego Analizator Równań Różniczkowych </p>
+	  <p>Składał się on z ośmiu sumatorów, ośmiu integratorów, sześciu multiplikatorów i sześciu transformatorów funkcji.
+	  Wkrótce ARR znalazł wielu użytkowników w zakresie badania drgań w nieliniowych układach mechanicznych.  </p>
+    <div class =p_small> By <a href="//commons.wikimedia.org/wiki/User:Hiuppo" title="User:Hiuppo">Hiuppo</a> - <span class="int-own-work" lang="pl">Praca własna</span>, <a href="https://creativecommons.org/licenses/by-sa/3.0" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, 
+	 <a href="https://commons.wikimedia.org/w/index.php?curid=2548934">Link</a>
+   </div>
+   </div>
+  </div>
+  <div class="column polska">
+    <div class="content">
+      <img src="ss/Polski_komputer_XYZ.jpg" alt="Mountains" style="width:100%">
+      <h4>XYZ</h4>
+      <p>W roku 1958 zbudowany został w Polsce pierwszy komputer nazwany XYZ. W roku 1961 ruszyła seryjna produkcja komputerów ZAM 2.</p>
+	  <p>Wydarzenie to, jedno z ważniejszych w historii polskiej informatyki, dowodziło, ze budowa takich komputerów w kraju jest możliwa. </p>
+    
+   </div>
+  </div>
+  
+   <div class="column zsrr">
+    <div class="content">
+      <img src="ss/radziecki.jpg" alt="Mountains" style="width:100%">
+      <h4>MESM</h4>
+      <p>Od 1948 roku Siergiej Aleksiejewicz Lebiediew kierował w Kijowie pracami zespołu,
+	  którego celem było opracowanie pierwszego radzieckiego komputera MESM ...
+	 </p>
+   </div>
+  </div>
+  
+   <div class="column polska">
+    <div class="content">
+      <img src="ss/ZAM-2.jpg" alt="Mountains" style="width:100%">
+      <h4>ZAM 2</h4>
+      <p> Komputery ZAM 2 miały, podobnie jak XYZ, pamięci bębnowe (prekursory pamięci dyskowych), a ponadto szybkie pamięci ultrasoniczne. W tych 
+	  ostatnich średni czas oczekiwania na jedno zapisane słowo wynosiło 0,5 milisekund.
+	 </p>
+	
+   </div>
+  </div>
+  
+  <div class="column polska">
+    <div class="content">
+      <img src="ss/ELWAT.jpg" alt="Mountains" style="width:100%">
+      <h4>ELWAT</h4>
+      <p>Odrębna grupa konstruktorów ELWRO przygotowała wspólnie z Wojskową Akademią Techniczną produkcję maszyn analogowych ELWAT 1</p>
+	  <p>Łącznie w latach 1967–1969 wyprodukowano 50 tych maszyn.
+	  </p>
+   </div>
+  </div>
+  
+  
+  <div class="column polska">
+    <div class="content">
+      <img src="ss/Odra_1001.jpg" alt="Mountains" style="width:100%">
+      <h4>Odra 1001</h4>
+      <p>Konstrukcja bębna, jedynej pamięci tej maszyny, została oparta na rozwiązaniu Romualda Marczyńskiego z IBJ PAN.
+</p>
+   </div>
+  </div>
+
+
+   <div class="column zsrr">
+    <div class="content">
+      <img src="ss/agat.png" alt="Mountains" style="width:100%">
+      <h4>Agat</h4>
+      <p>W 1983 roku na rynkach bloku wschodniego pojawił się komputer Agat, 
+	  określany na zachodzie jako słaba kopia Apple II, z którym był do
+	  pewnego stopnia kompatybilny. Agat-9 był ostateczną wersją urządzenia,
+	  która trafiła do masowej produkcji. Dla wielu obywateli Związku Radzieckiego
+	  przygoda z grami wideo zaczęła się właśnie od Agata.
+	 </p>
+   </div>
+  </div>
+  
+   <div class="column zsrr">
+    <div class="content">
+      <img src="ss/elbrus.jpg"   style="width:100%">
+      <h4>Elbrus</h4>
+      <p>Pierwszy komputer z serii, Elbrus-1,
+	  był produkowany w latach 1978-1979 i zaznaczył się w historii
+	  informatyki jako pierwszy komputer superskalarny. Główny projektant
+	  komputera, Boris Babajan, porównywał architekturę jego procesora do
+	  wyprodukowanego 18 lat później Pentium Pro[1]. Prace nad dwuprocesorową 
+	  odmianą zostały ukończone w 1986 roku. Gotowy superkomputer zainstalowano 
+	  w Estonii.
+	 </p>
+   </div>
+  </div>
+  
+  <div class="column zsrr">
+    <div class="content">
+      <img src="ss/iskra.png"  style="width:100%">
+      <h4>Iskra-1256</h4>
+      <p> Komputer Iskra-1256 powstał w 1979 roku w Kursku jako jako przelicznik
+	  artyleryjski dla marynarki wojennej. Potem urządzenie trafiło do 
+	  uniwersytetów, gdzie studenci uczyli się na nich programowania. 
+	  Oczywiście, zaczęły wtedy powstawać proste amatorskie gry wideo. 
+	  Co ciekawe, na Iskrze można było grać na przykład w cyfrową wersję 
+	  Okrętów, co zakrawa na ironię, jeśli przypomnimy sobie pierwotne 
+	  zastosowanie tego komputera.</p>
+    </div>
+  </div>
+  
+  
+  
+  <div class="column zsrr">
+    <div class="content">
+      <img src="ss/IM-29.png" alt="Car" style="width:100%">
+      <h4>IM-29</h4>
+      <p>Jak wiele innych urządzeń elektronicznych z czasów ZSRR IM-29 było kopią
+	  sprzętu produkowanego na zachodzie, a konkretniej urządzenia Computer 
+	  Chess firmy Mattel. Ta wersja komputera szachowego nie zmuszała nas do 
+	  samodzielnego przesuwania figur za komputer i wprowadzania naszych 
+	  ruchów do pamięci urządzenia.</p>
+    </div>
+  </div>
+  
+
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/eniac.png" alt="swiat" style="width:100%">
+      <h4>ENIAC</h4>
+      <p>ENIAC (Electronic Numerical Integrator And Computer) został zaprojektowany w 1945 roku, przez 
+	  naukowców z University of Pennsylvania's Moore School of Electical Engineering.
+	  ENIAC pracował z „rekordowym” taktowaniem 0,1 MHz, za co odpowiadało ponad 70 tysięcy rezystorów, 10 tysięcy kondensatorów, 1 500 
+	  przekaźników, 6 tysięcy ręcznych przełączników oraz 5 mln połączeń lutowanych.
+	  Uznawany jest za pierwszy i największy na świecie komputer stacjonarny </p>
+    </div>
+  </div>
+  
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/cdc.png" alt="swiat" style="width:100%">
+      <h4>CDC_6600</h4>
+      <p>Pierwsze komputery stacjonarne dostępne dla zwykłych użytkowników pojawiły się na rynku i trafiły do naszych domów w latach 80-tych XX wieku, czyli niemal 40 lat po ENIAC-u. W międzyczasie, w latach 60-tych XX wieku, 
+	  najpotężniejszym desktopem świata (zajmującym dosłownie całe biurko)
+	  był CDC 6600.</p>
+    </div>
+  </div>
+  
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/cray2.png" alt="swiat" style="width:100%">
+      <h4>Cray-2</h4>
+      <p>W latach 80-tych za niedościgniony wzór mocy obliczeniowej uchodził 
+	  już designerski Cray-2. Również w tych latach, a konkretnie w 1982 roku, 
+	  na komputerach PC zadebiutował system operacyjny Microsoft Windows 1.0, 
+	  który był pierwszym środowiskiem firmy Microsoft wykorzystującym interfejs 
+	  graficzny (GUI) i działającym jak nakładka na MS-DOS. I to wówczas tak 
+	  naprawdę rozpoczęła się era desktopów.</p>
+    </div>
+  </div>
+  
+  
+  
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/commodore.png" alt="swiat" style="width:100%">
+      <h4>Commodore-64</h4>
+      <p> Ówczesne komputery osobiste nie zajmowały już całego pokoju, 
+	  lecz z powodzeniem mieściły się na biurku dzięki niewielkim, blaszanym
+	  lub plastikowym konstrukcjom typu desktop. 
+	  Jednym z najpopularniejszych pecetów w tym okresie był Commodore 64, 
+	  który zadebiutował na rynku w 1982 roku i kosztował 595 dolarów. 
+	  Niewielka, beżowa jednostka centralna podpinana była do telewizora. 
+	  Komputer oferował już podstawowe oprogramowanie biurowe i można było 
+	  na nim zagrać w takie gry jak Castle Wolfenstein.
+	  Częstotliwość taktowania procesora wynosiła 1 MHz.
+	  Do tego 64 KB pamięci RAM oraz zewnętrzny napęd dyskietek 5,25 
+	  cala dla wersji Commodore 1541, na których można było zmieścić aż 
+	  170 KB danych.</p>
+    </div>
+  </div>
+  
+  
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/compaq.png" alt="swiat" style="width:100%">
+      <h4>Compaq Deskpro</h4>
+      <p>Jednak prawdziwą rewolucję w branży komputerowej 
+	  przyniosły pierwsze komputery z procesorami typu 386, 
+	  takie jak np. Compaq Deskpro z 1986 roku, a więc jeden z
+	  pierwszych komputerów powszechnie używanych w domach. 
+	  Kosztował wówczas aż 6 499 dolarów, ale wart był swojej ceny:
+	  posiadał 32-bitowy procesor o częstotliwości 16 MHz, który 
+	  umożliwiał zabawę w gry typu Wing Commander w rozdzielczości 640x480
+	  w aż 256 kolorach.</p>
+    </div>
+  </div>
+  
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/grid.png" alt="swiat" style="width:100%">
+      <h4>Cray-2</h4>
+      <p>Choć faktyczna kariera laptopów rozpoczęła 
+	  się w latach 90-tych XX wieku, to pierwszy laptop 
+	  udostępniany komercyjnie pojawił się pod koniec lat 
+	  70-tych. W 1979 roku na rynku zadebiutował Grid Compass Computer 1109.
+	  </p>
+	  <p>Za pomysłodawcę koncepcji laptopa, określanego
+	  pierwotnie jako „Dynabook”, uchodzi dziś Alan Key, pracownik 
+	  Xerox PARC. Jednak zaproponowane przez niego rozwiązanie nie 
+	  weszło do powszechnego obrotu.</p>
+    </div>
+  </div>
+  
+  
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/cray2.png" alt="swiat" style="width:100%">
+      <h4>Grid Compass</h4>
+      <p>W latach 80-tych za niedościgniony wzór mocy obliczeniowej uchodził 
+	  już designerski Cray-2. Również w tych latach, a konkretnie w 1982 roku, 
+	  na komputerach PC zadebiutował system operacyjny Microsoft Windows 1.0, 
+	  który był pierwszym środowiskiem firmy Microsoft wykorzystującym interfejs 
+	  graficzny (GUI) i działającym jak nakładka na MS-DOS. I to wówczas tak 
+	  naprawdę rozpoczęła się era desktopów.</p>
+    </div>
+  </div>
+  
+  
+  <div class="column swiat">
+    <div class="content">
+      <img src="ss/butterfly.png" alt="swiat" style="width:100%">
+      <h4>IBM ThinkPad 701C</h4>
+	  <p>IBM ThinkPad 701C zasłynął swą „składaną” klawiaturą (tzw. Butterfly)</p>
+      <p>Dopiero lata 90-te przyniosły rzeczywisty boom na laptopy i 
+	  skokowy rozwój tej kategorii sprzętu. Wraz ze zwiększaniem się 
+	  ich mocy obliczeniowej – zmniejszała się również masa, wskutek czego
+	  laptopy stawały się stopniowo podstawowym wyposażeniem zwykłych 
+	  użytkowników oraz firm. Przedsiębiorcy zaczęli z nich korzystać, a 
+	  dobry laptop stał się synonimem prestiżu. Przez wiele lat uważano, 
+	  że to właśnie laptopy stanowią kres możliwości rozwojowych komputerów 
+	  osobistych.</p>
+    </div>
+  </div>
+  
+  
+  <div class="column podzespoly">
+    <div class="content">
+      <img src="ss/4004.png" alt="podzespoly" style="width:100%">
+      <h4>Pierwszy procesor 4-bitowy.</h4>
+	  <p>I4004 – to pierwszy 4 bitowy procesor powstały w 1971 r. na zamówienie japońskiej firmy ETI, Procesor ten przeznaczony był co prawda tylko do kalkulatora ale stanowił początek technologicznej linii układów scalonych. Procesor zawarty był w pojedynczym układzie, składał się z około 2300 tranzystorów upakowanych na powierzchni 10 mikrometrów i pracował z częstotliwością 108 KHz.</p>
+    </div>
+  </div>
+  
+  
+    <div class="column podzespoly">
+    <div class="content">
+      <img src="ss/8008.png" alt="podzespoly" style="width:100%">
+      <h4>Procesory 8-bitowe</h4>
+	  <p>8008 – to opracowany w 1972 r. 8 bitowy procesor przeznaczony podobnie jak jego poprzednik – 4004, do prostych urządzeń obliczeniowych. Pracował z częstotliwością 200 KHz, na powierzchni 10 mikrometrów zawierał 3500 tranzystorów.</p>
+	  </div>
+  </div>
+  
+  
+    <div class="column podzespoly">
+    <div class="content">
+      <img src="ss/intelp2.png" alt="podzespoly" style="width:100%">
+      <h4>Intel Pentium</h4>
+	  <p>Pentium – mikroprocesor zaprojektowany i wytwarzany przez przedsiębiorstwo Intel, ukazał się na rynku w Polsce 22 marca 1993 jako następca serii 486.
+	  </p></div>
+  </div>
+  
+   <div class="column podzespoly">
+    <div class="content">
+      <img src="ss/turion.png" alt="podzespoly" style="width:100%">
+      <h4>AMD Turion Turion 64 X2</h4>
+	  <p>Procesor AMD Turion 64 X2 w wersji inżynieryjnej przeznaczony do komputerów przenośych. Wszystkie układy Turion charakteryzuje niski pobór mocy nieprzekraczający 35 watów.</p></div>
+  </div>
+  
+<!-- END GRID -->
+</div>
+
+<script>
+filterSelection("all") // Execute the function and show all columns
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("column");
+  if (c == "all") c = "";
+  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+// Show filtered elements
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {
+      element.className += " " + arr2[i];
+    }
+  }
+}
+
+// Hide elements that are not selected
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1); 
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer");
+var btns = btnContainer.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function(){
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
+</script>
+
+
+</body>
+</html>
